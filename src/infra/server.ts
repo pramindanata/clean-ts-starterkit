@@ -22,6 +22,7 @@ export function createServer(): Express {
   server.post('/login', m(Guest), c(AuthController, 'login'));
   server.post('/register', m(Guest), c(AuthController, 'register'));
   server.get('/me', m(Auth), c(AuthController, 'me'));
+  server.post('/logout', m(Auth), c(AuthController, 'logout'));
 
   server.use(m(ExceptionHandler));
 

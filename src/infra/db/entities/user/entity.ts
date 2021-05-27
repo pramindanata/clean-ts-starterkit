@@ -5,10 +5,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { TableName } from '../../constant';
+import { Table } from '../../constant';
 
 @Entity({
-  name: TableName.User,
+  name: Table.User,
 })
 export class OrmUser {
   @PrimaryGeneratedColumn({

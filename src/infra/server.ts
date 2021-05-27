@@ -7,7 +7,10 @@ import {
   AuthController,
   ExceptionHandler,
   Guest,
+  LoginSchema,
+  RegisterSchema,
   RequestContext,
+  SchemaValidator,
 } from '@/adapter';
 import { wrapMiddleware as m, wrapController as c } from './server-util';
 
@@ -19,9 +22,22 @@ export function createServer(): Express {
 
   server.use(m(RequestContext));
 
-  server.post('/login', m(Guest), c(AuthController, 'login'));
-  server.post('/register', m(Guest), c(AuthController, 'register'));
+  server.post(
+    '/login',
+    m(Guest),
+    m(SchemaValidator, { body: LoginSchema }),
+    c(AuthController, 'login'),
+  );
+
+  server.post(
+    '/register',
+    m(Guest),
+    m(SchemaValidator, { body: RegisterSchema }),
+    c(AuthController, 'register'),
+  );
+
   server.get('/me', m(Auth), c(AuthController, 'me'));
+
   server.post('/logout', m(Auth), c(AuthController, 'logout'));
 
   server.use(m(ExceptionHandler));

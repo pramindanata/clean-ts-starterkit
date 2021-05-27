@@ -1,4 +1,5 @@
-import { ErrorRequestHandler, RequestHandler } from 'express';
+import Joi from 'joi';
+import { ErrorRequestHandler, Request, RequestHandler } from 'express';
 import { User } from '@/domain';
 import { Env } from './constant';
 
@@ -42,4 +43,8 @@ export interface MiddlewareFactory {
 
 export interface ExceptionMiddlewareFactory {
   create(...args: any[]): ErrorRequestHandler;
+}
+
+export interface RequestPayloadSchema {
+  get(req: Request, joi: Joi.Root): Promise<Joi.ObjectSchema>;
 }

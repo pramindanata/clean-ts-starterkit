@@ -1,3 +1,5 @@
+import { inject, injectable } from 'tsyringe';
+import { Token } from '@/common';
 import { CryptHelperContract, UserRepositoryContract } from '@/contract';
 import { User } from '../entities';
 import {
@@ -5,15 +7,19 @@ import {
   InvalidCredentialGivenException,
 } from '../exception';
 
+@injectable()
 export class AuthUseCase {
   constructor(
+    @inject(Token.UserRepository)
     private userRepository: UserRepositoryContract,
+
+    @inject(Token.CryptHelper)
     private cryptHelper: CryptHelperContract,
   ) {}
 
   async login(props: LoginProps): Promise<User> {
     const { email, password } = props;
-    const user = await this.userRepository.getByEmail(email);
+    const user = await this.userRepository.getDetailByEmail(email);
 
     if (!user) {
       throw new InvalidCredentialGivenException();
@@ -33,7 +39,7 @@ export class AuthUseCase {
 
   async register(props: RegisterProps): Promise<User> {
     const { email, password } = props;
-    const otherUser = await this.userRepository.getByEmail(email);
+    const otherUser = await this.userRepository.getDetailByEmail(email);
 
     if (otherUser) {
       throw new EmailAlreadyTakenException();

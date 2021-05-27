@@ -1,3 +1,6 @@
+import { User } from '@/domain';
+import { RequestHandler } from 'express';
+
 export type Ctor<T = Record<string, any>> = new (...args: any[]) => T;
 
 export interface Config {
@@ -24,4 +27,12 @@ export interface ConfigKey {
   'db.name': string;
   'db.user': string;
   'db.password': string;
+}
+
+export interface RequestContext {
+  user?: User;
+}
+
+export interface MiddlewareFactory {
+  create(...args: any[]): RequestHandler;
 }

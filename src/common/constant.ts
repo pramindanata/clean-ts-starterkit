@@ -4,3 +4,7 @@ export enum Token {
   CryptHelper = 'CryptHelper',
   UserRepository = 'UserRepository',
 }
+
+export enum Cookie {
+  Token = 'Token',
+}

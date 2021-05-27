@@ -8,7 +8,13 @@ export class UserRepository
   extends AbstractRepository<OrmUser>
   implements UserRepositoryContract
 {
-  async getByEmail(email: string): Promise<User | undefined> {
+  async getDetail(id: string): Promise<User | undefined> {
+    const user = await this.repository.findOne(id);
+
+    return user && OrmUserMapper.toDomain(user);
+  }
+
+  async getDetailByEmail(email: string): Promise<User | undefined> {
     const user = await this.repository.findOne({ email });
 
     return user && OrmUserMapper.toDomain(user);

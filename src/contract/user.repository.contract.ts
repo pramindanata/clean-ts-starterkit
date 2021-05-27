@@ -1,7 +1,8 @@
 import { User } from '@/domain';
 
 export interface UserRepositoryContract {
-  getByEmail(email: string): Promise<User | undefined>;
+  getDetail(id: string): Promise<User | undefined>;
+  getDetailByEmail(email: string): Promise<User | undefined>;
   create(props: CreateUserProps): Promise<User>;
 }
 

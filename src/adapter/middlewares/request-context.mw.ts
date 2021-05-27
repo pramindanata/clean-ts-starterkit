@@ -7,7 +7,7 @@ import { User, UserUseCase } from '@/domain';
 import { UnauthenticatedException } from '../exception';
 
 @singleton()
-export class Context implements MiddlewareFactory {
+export class RequestContext implements MiddlewareFactory {
   constructor(
     private userUseCase: UserUseCase,
 

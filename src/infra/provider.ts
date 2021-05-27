@@ -3,8 +3,13 @@ import { getCustomRepository } from 'typeorm';
 import { Token } from '@/common';
 import { UserRepository } from './db';
 import { ConfigHelper, JwtHelper, CryptHelper } from './helpers';
+import { createConfig } from './config';
 
 const container = baseContainer;
+
+container.register(Token.Config, {
+  useValue: createConfig(),
+});
 
 container.register(Token.ConfigHelper, {
   useFactory: (c) => c.resolve(ConfigHelper),

@@ -1,6 +1,8 @@
+import { singleton } from 'tsyringe';
 import bcrypt from 'bcrypt';
 import { CryptHelperContract } from '@/contract';
 
+@singleton()
 export class CryptHelper implements CryptHelperContract {
   async hash(text: string): Promise<string> {
     const maxSalt = 10;

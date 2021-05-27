@@ -1,7 +1,9 @@
+import { singleton } from 'tsyringe';
 import jwt from 'jsonwebtoken';
 import { JwtPayload, JwtHelperContract } from '@/contract';
 import { ConfigHelper } from './config.helper';
 
+@singleton()
 export class JwtHelper implements JwtHelperContract {
   constructor(private configHelper: ConfigHelper) {}
 

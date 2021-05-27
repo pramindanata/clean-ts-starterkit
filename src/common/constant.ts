@@ -1,4 +1,5 @@
 export enum Token {
+  Config = 'Config',
   ConfigHelper = 'ConfigHelper',
   JwtHelper = 'JwtHelper',
   CryptHelper = 'CryptHelper',
@@ -6,5 +7,5 @@ export enum Token {
 }
 
 export enum Cookie {
-  Token = 'Token',
+  Token = 'token',
 }

@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { Cookie, Token } from '@/common';
 import { JwtHelperContract } from '@/contract';
 import { AuthUseCase } from '@/domain';
+import { UserDto } from '../dto';
 
 @singleton()
 export class AuthController {
@@ -20,7 +21,7 @@ export class AuthController {
 
     return res.cookie(Cookie.Token, token).json({
       data: {
-        user: { id: user.id, email: user.email },
+        user: UserDto.fromDomain(user),
       },
     });
   }
@@ -35,7 +36,7 @@ export class AuthController {
 
     return res.cookie(Cookie.Token, token).json({
       data: {
-        user: { id: user.id, email: user.email },
+        user: UserDto.fromDomain(user),
       },
     });
   }
@@ -44,7 +45,9 @@ export class AuthController {
     const user = req.ctx.user!;
 
     return res.json({
-      data: { user },
+      data: {
+        user: UserDto.fromDomain(user),
+      },
     });
   }
 }

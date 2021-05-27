@@ -1,11 +1,12 @@
 import { RequestHandler } from 'express';
 import { JsonWebTokenError } from 'jsonwebtoken';
-import { inject } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 import { Cookie, MiddlewareFactory, Token } from '@/common';
 import { JwtHelperContract } from '@/contract';
 import { User, UserUseCase } from '@/domain';
 import { UnauthenticatedException } from '../exception';
 
+@singleton()
 export class Context implements MiddlewareFactory {
   constructor(
     private userUseCase: UserUseCase,

@@ -2,7 +2,13 @@ import express, { Express } from 'express';
 import 'express-async-errors';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import { Auth, AuthController, Guest, RequestContext } from '@/adapter';
+import {
+  Auth,
+  AuthController,
+  Guest,
+  handleException,
+  RequestContext,
+} from '@/adapter';
 import { wrapMiddleware as m, wrapController as c } from './server-util';
 
 export function createServer(): Express {
@@ -16,6 +22,8 @@ export function createServer(): Express {
   server.post('/login', m(Guest), c(AuthController, 'login'));
   server.post('/register', m(Guest), c(AuthController, 'register'));
   server.get('/me', m(Auth), c(AuthController, 'me'));
+
+  server.use(handleException());
 
   return server;
 }

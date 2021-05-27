@@ -1,11 +1,11 @@
 version: '3'
 
 networks:
-  clean-sp-net:
+  clean-kit-dev-net:
     driver: bridge
 
 volumes:
-  clean-sp-pg:
+  clean-kit-dev-pg:
     driver: local
 
 services:
@@ -20,6 +20,6 @@ services:
     ports:
       - 5432:5432
     networks:
-      - clean-sp-net
+      - clean-kit-dev-net
     volumes:
-      - clean-sp-pg:/var/lib/postgresql/data
+      - clean-kit-dev-pg:/var/lib/postgresql/data

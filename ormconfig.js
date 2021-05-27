@@ -19,8 +19,10 @@ module.exports = {
   username: env.DB_USER || 'postgres',
   password: env.DB_PASSWORD || '',
   logging: ['error'],
-  entities: [`./${rootDir}/infra/db/entities/*/entity.{js,ts}`],
+  entities: [`./${rootDir}/infra/db/entities/*/entity{.ts,.js}`],
   migrations: ['./dist/infra/db/migrations/*.js'],
+  seeds: [`./${rootDir}/infra/db/seeds/*{.ts,.js}`],
+  factories: [`./${rootDir}/infra/db/factories/*{.ts,.js}`],
   cli: {
     migrationsDir: `./src/infra/db/migrations`,
   },

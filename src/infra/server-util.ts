@@ -1,5 +1,5 @@
-import { RequestHandler } from 'express';
-import { Ctor, MiddlewareFactory } from '@/common';
+import { ErrorRequestHandler, RequestHandler } from 'express';
+import { Ctor, MiddlewareFactory, ExceptionMiddlewareFactory } from '@/common';
 import { container } from './provider';
 
 export function wrapController<
@@ -12,10 +12,12 @@ export function wrapController<
   return method.bind(controller);
 }
 
-export function wrapMiddleware<M extends MiddlewareFactory>(
+export function wrapMiddleware<
+  M extends MiddlewareFactory | ExceptionMiddlewareFactory,
+>(
   ctor: Ctor<M>,
   ...args: Parameters<M['create']>
-): RequestHandler {
+): RequestHandler | ErrorRequestHandler {
   const factory = container.resolve(ctor);
 
   return factory.create(...args);

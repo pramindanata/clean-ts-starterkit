@@ -5,8 +5,8 @@ import cookieParser from 'cookie-parser';
 import {
   Auth,
   AuthController,
+  ExceptionHandler,
   Guest,
-  handleException,
   RequestContext,
 } from '@/adapter';
 import { wrapMiddleware as m, wrapController as c } from './server-util';
@@ -23,7 +23,7 @@ export function createServer(): Express {
   server.post('/register', m(Guest), c(AuthController, 'register'));
   server.get('/me', m(Auth), c(AuthController, 'me'));
 
-  server.use(handleException());
+  server.use(m(ExceptionHandler));
 
   return server;
 }

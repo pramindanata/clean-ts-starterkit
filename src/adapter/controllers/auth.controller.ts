@@ -19,6 +19,8 @@ export class AuthController {
     const user = await this.authUseCase.login({ email, password });
     const token = await this.jwtHelper.create({ sub: user.id });
 
+    throw new Error('yeet');
+
     return res.cookie(Cookie.Token, token).json({
       data: {
         user: UserDto.fromDomain(user),

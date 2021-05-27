@@ -1,10 +1,12 @@
+import { ErrorRequestHandler, RequestHandler } from 'express';
 import { User } from '@/domain';
-import { RequestHandler } from 'express';
+import { Env } from './constant';
 
 export type Ctor<T = Record<string, any>> = new (...args: any[]) => T;
 
 export interface Config {
   app: {
+    env: Env;
     host: string;
     port: number;
     secret: string;
@@ -20,6 +22,7 @@ export interface Config {
 
 export interface ConfigKey {
   'app.host': string;
+  'app.env': Env;
   'app.port': number;
   'app.secret': string;
   'db.host': string;
@@ -35,4 +38,8 @@ export interface RequestContext {
 
 export interface MiddlewareFactory {
   create(...args: any[]): RequestHandler;
+}
+
+export interface ExceptionMiddlewareFactory {
+  create(...args: any[]): ErrorRequestHandler;
 }

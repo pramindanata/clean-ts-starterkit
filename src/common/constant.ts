@@ -9,3 +9,8 @@ export enum Token {
 export enum Cookie {
   Token = 'token',
 }
+
+export enum Env {
+  Development = 'development',
+  Production = 'production',
+}

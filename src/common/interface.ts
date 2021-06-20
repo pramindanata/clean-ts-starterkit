@@ -33,6 +33,16 @@ export interface ConfigKey {
   'db.password': string;
 }
 
+export interface Pagination<T = any> {
+  data: T[];
+  total: number;
+}
+
+export interface PaginationOptions {
+  limit: number;
+  page: number;
+}
+
 export interface RequestContext {
   user?: User;
 }

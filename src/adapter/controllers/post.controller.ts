@@ -13,12 +13,6 @@ export class PostController {
     req: Request<any, any, any, IndexQueryReq>,
     res: Response,
   ): Promise<any> {
-    const { ability } = req.ctx;
-
-    if (ability.cannot('viewAny', Post)) {
-      throw new UnauthorizedException();
-    }
-
     const { limit, page } = req.query;
     const { total, data } = await this.postUseCase.getPagination({
       limit,
@@ -34,7 +28,7 @@ export class PostController {
   ): Promise<any> {
     const { ability } = req.ctx;
 
-    if (ability.cannot('create', Post)) {
+    if (ability!.cannot('create', Post)) {
       throw new UnauthorizedException();
     }
 
@@ -52,16 +46,11 @@ export class PostController {
   }
 
   async show(req: Request<ShowParamsReq>, res: Response): Promise<any> {
-    const { ability } = req.ctx;
     const { postId } = req.params;
     const post = await this.postUseCase.getDetail(postId);
 
     if (!post) {
       throw new NotFoundException();
-    }
-
-    if (ability.cannot('view', post)) {
-      throw new UnauthorizedException();
     }
 
     return res.json({
@@ -82,7 +71,7 @@ export class PostController {
       throw new NotFoundException();
     }
 
-    if (ability.cannot('update', post)) {
+    if (ability!.cannot('update', post)) {
       throw new UnauthorizedException();
     }
 
@@ -102,7 +91,7 @@ export class PostController {
       throw new NotFoundException();
     }
 
-    if (ability.cannot('delete', post)) {
+    if (ability!.cannot('delete', post)) {
       throw new UnauthorizedException();
     }
 

@@ -50,7 +50,7 @@ export interface PaginationOptions {
 
 export interface RequestContext {
   user?: User;
-  ability: Ability;
+  ability?: Ability;
 }
 
 export interface MiddlewareFactory {

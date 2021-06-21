@@ -23,11 +23,10 @@ export class RequestContext implements MiddlewareFactory {
     return async (req, res, next) => {
       const { cookies } = req;
       const user = await this.authenticate(cookies);
-      const ability = this.abilityFactory.createForUser(user!);
 
       req.ctx = {
         user,
-        ability,
+        ability: user && this.abilityFactory.createForUser(user),
       };
 
       next();

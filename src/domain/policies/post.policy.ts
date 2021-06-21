@@ -1,15 +1,7 @@
 import { Post, User } from '../entities';
 
 export class PostPolicy {
-  viewAny(): boolean {
-    return true;
-  }
-
   create(): boolean {
-    return true;
-  }
-
-  view(): boolean {
     return true;
   }
 

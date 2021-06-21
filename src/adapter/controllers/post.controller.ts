@@ -1,9 +1,9 @@
 import { injectable } from 'tsyringe';
 import { Request, Response } from 'express';
 import { PaginationOptions, ReqParams, ReqQuery } from '@/common';
-import { PostUseCase } from '@/domain';
+import { Post, PostUseCase } from '@/domain';
 import { PostDto } from '../dto';
-import { NotFoundException } from '../exception';
+import { NotFoundException, UnauthorizedException } from '../exception';
 
 @injectable()
 export class PostController {
@@ -13,6 +13,12 @@ export class PostController {
     req: Request<any, any, any, IndexQueryReq>,
     res: Response,
   ): Promise<any> {
+    const { ability } = req.ctx;
+
+    if (ability.cannot('viewAny', Post)) {
+      throw new UnauthorizedException();
+    }
+
     const { limit, page } = req.query;
     const { total, data } = await this.postUseCase.getPagination({
       limit,
@@ -26,6 +32,12 @@ export class PostController {
     req: Request<any, any, CreateBodyReq>,
     res: Response,
   ): Promise<any> {
+    const { ability } = req.ctx;
+
+    if (ability.cannot('create', Post)) {
+      throw new UnauthorizedException();
+    }
+
     const { title, content } = req.body;
     const { user } = req.ctx;
     const post = await this.postUseCase.create({
@@ -40,11 +52,16 @@ export class PostController {
   }
 
   async show(req: Request<ShowParamsReq>, res: Response): Promise<any> {
+    const { ability } = req.ctx;
     const { postId } = req.params;
     const post = await this.postUseCase.getDetail(postId);
 
     if (!post) {
       throw new NotFoundException();
+    }
+
+    if (ability.cannot('view', post)) {
+      throw new UnauthorizedException();
     }
 
     return res.json({
@@ -56,12 +73,17 @@ export class PostController {
     req: Request<ShowParamsReq, any, UpdateBodyReq>,
     res: Response,
   ): Promise<any> {
+    const { ability } = req.ctx;
     const { content, title } = req.body;
     const { postId } = req.params;
     const post = await this.postUseCase.getDetail(postId);
 
     if (!post) {
       throw new NotFoundException();
+    }
+
+    if (ability.cannot('update', post)) {
+      throw new UnauthorizedException();
     }
 
     const updatedPost = await this.postUseCase.update(post, { content, title });
@@ -72,11 +94,16 @@ export class PostController {
   }
 
   async delete(req: Request<ShowParamsReq>, res: Response): Promise<any> {
+    const { ability } = req.ctx;
     const { postId } = req.params;
     const post = await this.postUseCase.getDetail(postId);
 
     if (!post) {
       throw new NotFoundException();
+    }
+
+    if (ability.cannot('delete', post)) {
+      throw new UnauthorizedException();
     }
 
     await this.postUseCase.delete(post.id);

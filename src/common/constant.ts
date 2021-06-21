@@ -2,6 +2,8 @@ export enum Token {
   Container = 'Container',
   Config = 'Config',
   Joi = 'Joi',
+  PolicyDict = 'PolicyDict',
+  AbilityFactory = 'AbilityFactory',
   ConfigHelper = 'ConfigHelper',
   JwtHelper = 'JwtHelper',
   CryptHelper = 'CryptHelper',

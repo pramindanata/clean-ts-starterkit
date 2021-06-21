@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import { ErrorRequestHandler, Request, RequestHandler } from 'express';
+import { Ability } from 'policy-authorization';
 import { User } from '@/domain';
 import { Env } from './constant';
 
@@ -49,6 +50,7 @@ export interface PaginationOptions {
 
 export interface RequestContext {
   user?: User;
+  ability: Ability;
 }
 
 export interface MiddlewareFactory {

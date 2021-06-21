@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 import { JsonWebTokenError } from 'jsonwebtoken';
 import { inject, singleton } from 'tsyringe';
+import { AbilityFactory } from 'policy-authorization';
 import { Cookie, MiddlewareFactory, Token } from '@/common';
 import { JwtHelperContract } from '@/contract';
 import { User, UserUseCase } from '@/domain';
@@ -11,6 +12,9 @@ export class RequestContext implements MiddlewareFactory {
   constructor(
     private userUseCase: UserUseCase,
 
+    @inject(Token.AbilityFactory)
+    private abilityFactory: AbilityFactory,
+
     @inject(Token.JwtHelper)
     private jwtHelper: JwtHelperContract,
   ) {}
@@ -19,9 +23,11 @@ export class RequestContext implements MiddlewareFactory {
     return async (req, res, next) => {
       const { cookies } = req;
       const user = await this.authenticate(cookies);
+      const ability = this.abilityFactory.createForUser(user!);
 
       req.ctx = {
         user,
+        ability,
       };
 
       next();

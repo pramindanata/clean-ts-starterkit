@@ -27,10 +27,21 @@ export class PostUseCase {
 
     return post || undefined;
   }
+
+  async update(post: Post, props: UpdatePostProps): Promise<Post> {
+    const updatedPost = await this.postRepo.update(post, props);
+
+    return updatedPost;
+  }
 }
 
 export interface CreatePostProps {
   title: string;
   content: string;
   author: User;
+}
+
+export interface UpdatePostProps {
+  title: string;
+  content: string;
 }

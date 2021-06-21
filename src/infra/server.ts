@@ -11,12 +11,13 @@ import {
   PostController,
   PostCreateBodySchema,
   PostIndexQuerySchema,
+  PostShowParamsSchema,
+  PostUpdateBodySchema,
   RegisterSchema,
   RequestContext,
   SchemaValidator,
 } from '@/adapter';
 import { wrapMiddleware as m, wrapController as c } from './server-util';
-import { PostShowParamsSchema } from '@/adapter/schemas/post/show-params.schema';
 
 export function createServer(): Express {
   const server = express();
@@ -32,6 +33,7 @@ export function createServer(): Express {
     m(SchemaValidator, { body: LoginSchema }),
     c(AuthController, 'login'),
   );
+
   server.post(
     '/register',
     m(Guest),
@@ -39,6 +41,7 @@ export function createServer(): Express {
     c(AuthController, 'register'),
   );
   server.get('/me', m(Auth), c(AuthController, 'me'));
+
   server.post('/logout', m(Auth), c(AuthController, 'logout'));
 
   server.get(
@@ -46,16 +49,28 @@ export function createServer(): Express {
     m(SchemaValidator, { query: PostIndexQuerySchema }),
     c(PostController, 'index'),
   );
+
   server.post(
     '/posts',
     m(Auth),
     m(SchemaValidator, { body: PostCreateBodySchema }),
     c(PostController, 'create'),
   );
+
   server.get(
     '/posts/:postId',
     m(SchemaValidator, { params: PostShowParamsSchema }),
     c(PostController, 'show'),
+  );
+
+  server.put(
+    '/posts/:postId',
+    m(Auth),
+    m(SchemaValidator, {
+      params: PostShowParamsSchema,
+      body: PostUpdateBodySchema,
+    }),
+    c(PostController, 'update'),
   );
 
   server.use(m(ExceptionHandler));

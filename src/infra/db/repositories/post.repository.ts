@@ -1,7 +1,7 @@
 import { AbstractRepository, EntityRepository } from 'typeorm';
 import { Pagination, PaginationOptions } from '@/common';
 import { PostRepositoryContract } from '@/contract';
-import { CreatePostProps, Post } from '@/domain';
+import { CreatePostProps, Post, UpdatePostProps } from '@/domain';
 import { OrmPost, OrmPostMapper } from '../entities';
 
 @EntityRepository(OrmPost)
@@ -45,5 +45,20 @@ export class PostRepository
     });
 
     return post && OrmPostMapper.toDomain(post);
+  }
+
+  async update(post: Post, props: UpdatePostProps): Promise<Post> {
+    const { content, title } = props;
+    const updatedPost = new Post({
+      id: post.id,
+      title,
+      content,
+      author: post.author,
+      createdAt: post.createdAt,
+    });
+
+    await this.repository.update({ id: post.id }, { title, content });
+
+    return updatedPost;
   }
 }

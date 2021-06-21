@@ -1,6 +1,6 @@
 import { injectable } from 'tsyringe';
 import { Request, Response } from 'express';
-import { PaginationOptions, ReqQuery } from '@/common';
+import { PaginationOptions, ReqParams, ReqQuery } from '@/common';
 import { PostUseCase } from '@/domain';
 import { PostDto } from '../dto';
 import { NotFoundException } from '../exception';
@@ -10,7 +10,7 @@ export class PostController {
   constructor(private postUseCase: PostUseCase) {}
 
   async index(
-    req: Request<any, any, any, ReqQuery<PaginationOptions>>,
+    req: Request<any, any, any, IndexQueryReq>,
     res: Response,
   ): Promise<any> {
     const { limit, page } = req.query;
@@ -39,7 +39,7 @@ export class PostController {
     });
   }
 
-  async show(req: Request, res: Response): Promise<any> {
+  async show(req: Request<ShowParamsReq>, res: Response): Promise<any> {
     const { postId } = req.params;
     const post = await this.postUseCase.getDetail(postId);
 
@@ -51,9 +51,36 @@ export class PostController {
       data: PostDto.fromDomain(post),
     });
   }
+
+  async update(
+    req: Request<ShowParamsReq, any, UpdateBodyReq>,
+    res: Response,
+  ): Promise<any> {
+    const { content, title } = req.body;
+    const { postId } = req.params;
+    const post = await this.postUseCase.getDetail(postId);
+
+    if (!post) {
+      throw new NotFoundException();
+    }
+
+    const updatedPost = await this.postUseCase.update(post, { content, title });
+
+    return res.json({
+      data: PostDto.fromDomain(updatedPost),
+    });
+  }
 }
 
+type IndexQueryReq = ReqQuery<PaginationOptions>;
+type ShowParamsReq = ReqParams<{ postId: string }>;
+
 interface CreateBodyReq {
+  title: string;
+  content: string;
+}
+
+interface UpdateBodyReq {
   title: string;
   content: string;
 }

@@ -5,6 +5,9 @@ import { Env } from './constant';
 
 export type Ctor<T = Record<string, any>> = new (...args: any[]) => T;
 export type ReqQuery<T> = T & qs.ParsedQs;
+export type ReqParams<T> = T & {
+  [key: string]: string;
+};
 
 export interface Config {
   app: {

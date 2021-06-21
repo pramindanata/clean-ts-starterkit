@@ -2,7 +2,8 @@ import { injectable } from 'tsyringe';
 import { Request, Response } from 'express';
 import { PaginationOptions, ReqQuery } from '@/common';
 import { PostUseCase } from '@/domain';
-import { PostDTO } from '../dto';
+import { PostDto } from '../dto';
+import { NotFoundException } from '../exception';
 
 @injectable()
 export class PostController {
@@ -18,7 +19,7 @@ export class PostController {
       page,
     });
 
-    return res.json({ total, data: data.map(PostDTO.fromDomain) });
+    return res.json({ total, data: data.map(PostDto.fromDomain) });
   }
 
   async create(
@@ -34,7 +35,20 @@ export class PostController {
     });
 
     return res.json({
-      data: PostDTO.fromDomain(post),
+      data: PostDto.fromDomain(post),
+    });
+  }
+
+  async show(req: Request, res: Response): Promise<any> {
+    const { postId } = req.params;
+    const post = await this.postUseCase.getDetail(postId);
+
+    if (!post) {
+      throw new NotFoundException();
+    }
+
+    return res.json({
+      data: PostDto.fromDomain(post),
     });
   }
 }

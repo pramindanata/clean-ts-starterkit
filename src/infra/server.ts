@@ -16,6 +16,7 @@ import {
   SchemaValidator,
 } from '@/adapter';
 import { wrapMiddleware as m, wrapController as c } from './server-util';
+import { PostShowParamsSchema } from '@/adapter/schemas/post/show-params.schema';
 
 export function createServer(): Express {
   const server = express();
@@ -50,6 +51,11 @@ export function createServer(): Express {
     m(Auth),
     m(SchemaValidator, { body: PostCreateBodySchema }),
     c(PostController, 'create'),
+  );
+  server.get(
+    '/posts/:postId',
+    m(SchemaValidator, { params: PostShowParamsSchema }),
+    c(PostController, 'show'),
   );
 
   server.use(m(ExceptionHandler));

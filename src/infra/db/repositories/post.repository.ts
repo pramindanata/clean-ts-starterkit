@@ -38,4 +38,12 @@ export class PostRepository
 
     return OrmPostMapper.toDomain(post);
   }
+
+  async getDetail(id: string): Promise<Post | undefined> {
+    const post = await this.repository.findOne(id, {
+      relations: ['author'],
+    });
+
+    return post && OrmPostMapper.toDomain(post);
+  }
 }

@@ -9,6 +9,10 @@ export enum Token {
   PostRepository = 'PostRepository',
 }
 
+export const Regex = {
+  Number: /^\d+$/,
+};
+
 export enum Cookie {
   Token = 'token',
 }

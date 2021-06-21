@@ -21,6 +21,12 @@ export class PostUseCase {
 
     return post;
   }
+
+  async getDetail(id: string): Promise<Post | undefined> {
+    const post = await this.postRepo.getDetail(id);
+
+    return post || undefined;
+  }
 }
 
 export interface CreatePostProps {

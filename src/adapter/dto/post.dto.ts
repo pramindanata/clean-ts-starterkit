@@ -1,7 +1,7 @@
 import { Post } from '@/domain';
 import { UserDto, UserDtoProps } from './user.dto';
 
-export class PostDTO {
+export class PostDto {
   id: string;
   title: string;
   content: string;
@@ -16,10 +16,10 @@ export class PostDTO {
     this.author = new UserDto(props.author);
   }
 
-  static fromDomain(domain: Post): PostDTO {
+  static fromDomain(domain: Post): PostDto {
     const { author } = domain;
 
-    return new PostDTO({
+    return new PostDto({
       id: domain.id,
       title: domain.title,
       content: domain.content,

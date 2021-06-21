@@ -20,9 +20,7 @@ export class AuthController {
     const token = await this.jwtHelper.create({ sub: user.id });
 
     return res.cookie(Cookie.Token, token).json({
-      data: {
-        user: UserDto.fromDomain(user),
-      },
+      data: UserDto.fromDomain(user),
     });
   }
 
@@ -35,9 +33,7 @@ export class AuthController {
     const token = await this.jwtHelper.create({ sub: user.id });
 
     return res.cookie(Cookie.Token, token).json({
-      data: {
-        user: UserDto.fromDomain(user),
-      },
+      data: UserDto.fromDomain(user),
     });
   }
 
@@ -51,9 +47,7 @@ export class AuthController {
     const user = req.ctx.user!;
 
     return res.json({
-      data: {
-        user: UserDto.fromDomain(user),
-      },
+      data: UserDto.fromDomain(user),
     });
   }
 }

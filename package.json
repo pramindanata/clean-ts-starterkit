@@ -34,10 +34,11 @@
     "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
     "pg": "^8.6.0",
+    "policy-authorization": "^1.0.1",
     "reflect-metadata": "^0.1.13",
+    "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.9.0",
     "tsyringe": "^4.5.0",
-    "ts-node": "^10.0.0",
     "typeorm": "^0.2.32",
     "typeorm-seeding": "^1.6.1",
     "typescript": "^4.3.2"

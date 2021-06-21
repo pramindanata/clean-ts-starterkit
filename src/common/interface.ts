@@ -1,9 +1,14 @@
 import Joi from 'joi';
 import { ErrorRequestHandler, Request, RequestHandler } from 'express';
+import { Ability } from 'policy-authorization';
 import { User } from '@/domain';
 import { Env } from './constant';
 
 export type Ctor<T = Record<string, any>> = new (...args: any[]) => T;
+export type ReqQuery<T> = T & qs.ParsedQs;
+export type ReqParams<T> = T & {
+  [key: string]: string;
+};
 
 export interface Config {
   app: {
@@ -33,8 +38,19 @@ export interface ConfigKey {
   'db.password': string;
 }
 
+export interface Pagination<T = any> {
+  data: T[];
+  total: number;
+}
+
+export interface PaginationOptions {
+  limit: number;
+  page: number;
+}
+
 export interface RequestContext {
   user?: User;
+  ability?: Ability;
 }
 
 export interface MiddlewareFactory {

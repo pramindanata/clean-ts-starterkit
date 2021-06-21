@@ -8,6 +8,11 @@ import {
   ExceptionHandler,
   Guest,
   LoginSchema,
+  PostController,
+  PostCreateBodySchema,
+  PostIndexQuerySchema,
+  PostShowParamsSchema,
+  PostUpdateBodySchema,
   RegisterSchema,
   RequestContext,
   SchemaValidator,
@@ -35,10 +40,45 @@ export function createServer(): Express {
     m(SchemaValidator, { body: RegisterSchema }),
     c(AuthController, 'register'),
   );
-
   server.get('/me', m(Auth), c(AuthController, 'me'));
 
   server.post('/logout', m(Auth), c(AuthController, 'logout'));
+
+  server.get(
+    '/posts',
+    m(SchemaValidator, { query: PostIndexQuerySchema }),
+    c(PostController, 'index'),
+  );
+
+  server.post(
+    '/posts',
+    m(Auth),
+    m(SchemaValidator, { body: PostCreateBodySchema }),
+    c(PostController, 'create'),
+  );
+
+  server.get(
+    '/posts/:postId',
+    m(SchemaValidator, { params: PostShowParamsSchema }),
+    c(PostController, 'show'),
+  );
+
+  server.put(
+    '/posts/:postId',
+    m(Auth),
+    m(SchemaValidator, {
+      params: PostShowParamsSchema,
+      body: PostUpdateBodySchema,
+    }),
+    c(PostController, 'update'),
+  );
+
+  server.delete(
+    '/posts/:postId',
+    m(Auth),
+    m(SchemaValidator, { params: PostShowParamsSchema }),
+    c(PostController, 'delete'),
+  );
 
   server.use(m(ExceptionHandler));
 

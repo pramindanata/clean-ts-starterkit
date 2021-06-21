@@ -70,6 +70,21 @@ export class PostController {
       data: PostDto.fromDomain(updatedPost),
     });
   }
+
+  async delete(req: Request<ShowParamsReq>, res: Response): Promise<any> {
+    const { postId } = req.params;
+    const post = await this.postUseCase.getDetail(postId);
+
+    if (!post) {
+      throw new NotFoundException();
+    }
+
+    await this.postUseCase.delete(post.id);
+
+    return res.json({
+      data: PostDto.fromDomain(post),
+    });
+  }
 }
 
 type IndexQueryReq = ReqQuery<PaginationOptions>;

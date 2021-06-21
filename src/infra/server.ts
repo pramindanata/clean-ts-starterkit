@@ -73,6 +73,13 @@ export function createServer(): Express {
     c(PostController, 'update'),
   );
 
+  server.delete(
+    '/posts/:postId',
+    m(Auth),
+    m(SchemaValidator, { params: PostShowParamsSchema }),
+    c(PostController, 'delete'),
+  );
+
   server.use(m(ExceptionHandler));
 
   return server;

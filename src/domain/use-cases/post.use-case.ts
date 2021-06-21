@@ -41,6 +41,10 @@ export class PostUseCase {
 
     return updatedPost;
   }
+
+  async delete(id: string): Promise<void> {
+    await this.postRepo.delete(id);
+  }
 }
 
 export interface CreatePostProps {

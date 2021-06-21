@@ -52,4 +52,8 @@ export class PostRepository
 
     await this.repository.update(id, { title, content });
   }
+
+  async delete(id: string): Promise<void> {
+    await this.repository.delete(id);
+  }
 }

@@ -29,7 +29,15 @@ export class PostUseCase {
   }
 
   async update(post: Post, props: UpdatePostProps): Promise<Post> {
-    const updatedPost = await this.postRepo.update(post, props);
+    const updatedPost = new Post({
+      id: post.id,
+      title: props.title,
+      content: props.content,
+      author: post.getAuthor(),
+      createdAt: post.createdAt,
+    });
+
+    await this.postRepo.update(post.id, props);
 
     return updatedPost;
   }

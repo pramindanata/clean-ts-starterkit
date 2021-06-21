@@ -1,3 +1,4 @@
+import { UndefinedPropertyException } from '@/common';
 import { User, UserProps } from './user';
 
 export class Post {
@@ -16,6 +17,14 @@ export class Post {
     if (props.author) {
       this.author = new User(props.author);
     }
+  }
+
+  getAuthor(): User {
+    if (!this.author) {
+      throw new UndefinedPropertyException();
+    }
+
+    return this.author;
   }
 }
 

@@ -47,18 +47,9 @@ export class PostRepository
     return post && OrmPostMapper.toDomain(post);
   }
 
-  async update(post: Post, props: UpdatePostProps): Promise<Post> {
-    const { content, title } = props;
-    const updatedPost = new Post({
-      id: post.id,
-      title,
-      content,
-      author: post.author,
-      createdAt: post.createdAt,
-    });
+  async update(id: string, props: UpdatePostProps): Promise<void> {
+    const { title, content } = props;
 
-    await this.repository.update({ id: post.id }, { title, content });
-
-    return updatedPost;
+    await this.repository.update(id, { title, content });
   }
 }

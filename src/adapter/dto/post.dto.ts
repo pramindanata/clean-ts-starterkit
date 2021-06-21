@@ -17,16 +17,16 @@ export class PostDto {
   }
 
   static fromDomain(domain: Post): PostDto {
-    const { author } = domain;
+    const author = domain.getAuthor();
 
     return new PostDto({
       id: domain.id,
       title: domain.title,
       content: domain.content,
       author: {
-        id: author!.id,
-        email: author!.email,
-        createdAt: author!.createdAt.toISOString(),
+        id: author.id,
+        email: author.email,
+        createdAt: author.createdAt.toISOString(),
       },
       createdAt: domain.createdAt.toISOString(),
     });

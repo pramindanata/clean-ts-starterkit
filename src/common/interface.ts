@@ -4,6 +4,7 @@ import { User } from '@/domain';
 import { Env } from './constant';
 
 export type Ctor<T = Record<string, any>> = new (...args: any[]) => T;
+export type ReqQuery<T> = T & qs.ParsedQs;
 
 export interface Config {
   app: {

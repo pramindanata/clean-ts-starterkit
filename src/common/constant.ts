@@ -6,6 +6,7 @@ export enum Token {
   JwtHelper = 'JwtHelper',
   CryptHelper = 'CryptHelper',
   UserRepository = 'UserRepository',
+  PostRepository = 'PostRepository',
 }
 
 export enum Cookie {

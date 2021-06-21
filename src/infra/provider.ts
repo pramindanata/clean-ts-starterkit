@@ -2,7 +2,7 @@ import { container as baseContainer } from 'tsyringe';
 import { getCustomRepository } from 'typeorm';
 import joi from 'joi';
 import { Token } from '@/common';
-import { UserRepository } from './db';
+import { PostRepository, UserRepository } from './db';
 import { ConfigHelper, JwtHelper, CryptHelper } from './helpers';
 import { createConfig } from './config';
 
@@ -30,6 +30,10 @@ container.register(Token.CryptHelper, {
 
 container.register(Token.UserRepository, {
   useFactory: () => getCustomRepository(UserRepository),
+});
+
+container.register(Token.PostRepository, {
+  useFactory: () => getCustomRepository(PostRepository),
 });
 
 container.register(Token.Joi, {

@@ -8,6 +8,8 @@ import {
   ExceptionHandler,
   Guest,
   LoginSchema,
+  PostController,
+  PostIndexQuerySchema,
   RegisterSchema,
   RequestContext,
   SchemaValidator,
@@ -28,17 +30,20 @@ export function createServer(): Express {
     m(SchemaValidator, { body: LoginSchema }),
     c(AuthController, 'login'),
   );
-
   server.post(
     '/register',
     m(Guest),
     m(SchemaValidator, { body: RegisterSchema }),
     c(AuthController, 'register'),
   );
-
   server.get('/me', m(Auth), c(AuthController, 'me'));
-
   server.post('/logout', m(Auth), c(AuthController, 'logout'));
+
+  server.get(
+    '/posts',
+    m(SchemaValidator, { query: PostIndexQuerySchema }),
+    c(PostController, 'index'),
+  );
 
   server.use(m(ExceptionHandler));
 

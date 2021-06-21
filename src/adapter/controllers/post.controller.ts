@@ -1,13 +1,15 @@
+import { injectable } from 'tsyringe';
 import { Request, Response } from 'express';
-import { PaginationOptions } from '@/common';
+import { PaginationOptions, ReqQuery } from '@/common';
 import { PostUseCase } from '@/domain';
 import { PostDTO } from '../dto';
 
+@injectable()
 export class PostController {
   constructor(private postUseCase: PostUseCase) {}
 
   async index(
-    req: Request<any, any, any, PaginationOptions>,
+    req: Request<any, any, any, ReqQuery<PaginationOptions>>,
     res: Response,
   ): Promise<any> {
     const { limit, page } = req.query;

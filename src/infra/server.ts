@@ -9,6 +9,7 @@ import {
   Guest,
   LoginSchema,
   PostController,
+  PostCreateBodySchema,
   PostIndexQuerySchema,
   RegisterSchema,
   RequestContext,
@@ -43,6 +44,12 @@ export function createServer(): Express {
     '/posts',
     m(SchemaValidator, { query: PostIndexQuerySchema }),
     c(PostController, 'index'),
+  );
+  server.post(
+    '/posts',
+    m(Auth),
+    m(SchemaValidator, { body: PostCreateBodySchema }),
+    c(PostController, 'create'),
   );
 
   server.use(m(ExceptionHandler));

@@ -20,4 +20,26 @@ export class PostController {
 
     return res.json({ total, data: data.map(PostDTO.fromDomain) });
   }
+
+  async create(
+    req: Request<any, any, CreateBodyReq>,
+    res: Response,
+  ): Promise<any> {
+    const { title, content } = req.body;
+    const { user } = req.ctx;
+    const post = await this.postUseCase.create({
+      title,
+      content,
+      author: user!,
+    });
+
+    return res.json({
+      data: PostDTO.fromDomain(post),
+    });
+  }
+}
+
+interface CreateBodyReq {
+  title: string;
+  content: string;
 }

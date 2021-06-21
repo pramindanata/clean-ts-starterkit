@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 import { Pagination, PaginationOptions, Token } from '@/common';
 import { PostRepositoryContract } from '@/contract';
-import { Post } from '../entities';
+import { Post, User } from '../entities';
 
 @injectable()
 export class PostUseCase {
@@ -15,4 +15,16 @@ export class PostUseCase {
 
     return pagination;
   }
+
+  async create(props: CreatePostProps): Promise<Post> {
+    const post = await this.postRepo.create(props);
+
+    return post;
+  }
+}
+
+export interface CreatePostProps {
+  title: string;
+  content: string;
+  author: User;
 }

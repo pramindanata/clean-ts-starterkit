@@ -1,4 +1,9 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 import { Table as TableName } from '../constant';
 
 export class CreatePost1624172587521 implements MigrationInterface {
@@ -22,6 +27,10 @@ export class CreatePost1624172587521 implements MigrationInterface {
             type: 'text',
           },
           {
+            name: 'authorId',
+            type: 'bigint',
+          },
+          {
             name: 'createdAt',
             type: 'timestamptz',
             default: 'now()',
@@ -34,9 +43,25 @@ export class CreatePost1624172587521 implements MigrationInterface {
         ],
       }),
     );
+
+    await queryRunner.createForeignKey(
+      TableName.Post,
+      new TableForeignKey({
+        columnNames: ['authorId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: TableName.User,
+        onDelete: 'CASCADE',
+      }),
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    const table = await queryRunner.getTable(TableName.Post);
+    const authorFK = table!.foreignKeys.find(
+      (fk) => fk.columnNames.indexOf('authorId') !== -1,
+    );
+
+    await queryRunner.dropForeignKey(TableName.Post, authorFK!);
     await queryRunner.dropTable(TableName.Post);
   }
 }

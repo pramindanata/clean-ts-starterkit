@@ -1,3 +1,2 @@
-export * from './login.schema';
-export * from './register.schema';
+export * from './auth';
 export * from './post';

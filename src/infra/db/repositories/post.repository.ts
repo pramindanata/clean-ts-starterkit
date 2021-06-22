@@ -2,7 +2,7 @@ import { AbstractRepository, EntityRepository } from 'typeorm';
 import { Pagination, PaginationOptions } from '@/common';
 import { PostRepositoryContract } from '@/contract';
 import { CreatePostProps, Post, UpdatePostProps } from '@/domain';
-import { OrmPost, OrmPostMapper } from '../entities';
+import { OrmPost } from '../entities';
 
 @EntityRepository(OrmPost)
 export class PostRepository
@@ -23,7 +23,7 @@ export class PostRepository
     });
 
     return {
-      data: data.map(OrmPostMapper.toDomain),
+      data: data.map(OrmPost.toDomain),
       total,
     };
   }
@@ -36,7 +36,7 @@ export class PostRepository
       author,
     });
 
-    return OrmPostMapper.toDomain(post);
+    return OrmPost.toDomain(post);
   }
 
   async getDetail(id: string): Promise<Post | undefined> {
@@ -44,7 +44,7 @@ export class PostRepository
       relations: ['author'],
     });
 
-    return post && OrmPostMapper.toDomain(post);
+    return post && OrmPost.toDomain(post);
   }
 
   async update(id: string, props: UpdatePostProps): Promise<void> {

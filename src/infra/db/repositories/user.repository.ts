@@ -1,7 +1,7 @@
 import { AbstractRepository, EntityRepository } from 'typeorm';
 import { UserRepositoryContract, CreateUserProps } from '@/contract';
 import { User } from '@/domain';
-import { OrmUser, OrmUserMapper } from '../entities';
+import { OrmUser } from '../entities';
 
 @EntityRepository(OrmUser)
 export class UserRepository
@@ -11,13 +11,13 @@ export class UserRepository
   async getDetail(id: string): Promise<User | undefined> {
     const user = await this.repository.findOne(id);
 
-    return user && OrmUserMapper.toDomain(user);
+    return user && OrmUser.toDomain(user);
   }
 
   async getDetailByEmail(email: string): Promise<User | undefined> {
     const user = await this.repository.findOne({ email });
 
-    return user && OrmUserMapper.toDomain(user);
+    return user && OrmUser.toDomain(user);
   }
 
   async create(props: CreateUserProps): Promise<User> {
@@ -26,6 +26,6 @@ export class UserRepository
       password: props.password,
     });
 
-    return OrmUserMapper.toDomain(user);
+    return OrmUser.toDomain(user);
   }
 }

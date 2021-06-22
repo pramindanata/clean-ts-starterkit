@@ -6,8 +6,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Table } from '../../constant';
-import { OrmUser } from '../user';
+import { Post } from '@/domain';
+import { Table } from '../constant';
+import { OrmUser } from './user.entity';
 
 @Entity({
   name: Table.Post,
@@ -39,4 +40,10 @@ export class OrmPost {
 
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  static toDomain(model: OrmPost): Post {
+    const post = new Post(model);
+
+    return post;
+  }
 }

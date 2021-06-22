@@ -5,7 +5,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Table } from '../../constant';
+import { User } from '@/domain';
+import { Table } from '../constant';
 
 @Entity({
   name: Table.User,
@@ -29,4 +30,10 @@ export class OrmUser {
 
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  static toDomain(model: OrmUser): User {
+    const user = new User(model);
+
+    return user;
+  }
 }
